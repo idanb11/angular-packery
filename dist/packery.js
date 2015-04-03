@@ -1,3 +1,10 @@
+/*!
+ * angular-packery
+ * http://github.com/sungard-labs/angular-packery
+ * Version: 1.0.4
+ * License: MIT
+ */
+
 'use strict';
 
 (function (){
@@ -145,7 +152,11 @@
         console.log(config);
 
         if (packeryEls.indexOf(el[0]) === -1) {
-          self.packery.appended(el[0]);
+          if (config.isAppended) {
+            self.packery.appended(el[0]);
+          } else {
+            self.packery.prepended(el[0]);
+          }
         }
 
         if (self.packeryDraggable === true) {
@@ -206,7 +217,6 @@
         scope.isOriginTop = !!scope.isOriginTop;
         scope.isResizeBound = !!scope.isResizeBound;
         scope.isAppended = !!scope.isAppended || config.isAppended;
-
 
         // Creates JS Object for passing CSS styles into Packery
         if (scope.containerStyle && (typeof scope.containerStyle === 'object' )) { scope.containerStyle = scope.containerStyle; }
