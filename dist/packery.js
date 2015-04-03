@@ -1,10 +1,3 @@
-/*!
- * angular-packery
- * http://github.com/sungard-labs/angular-packery
- * Version: 1.0.4
- * License: MIT
- */
-
 'use strict';
 
 (function (){
@@ -20,6 +13,7 @@
     draggable: true,
     handle: '*',
     timeout: 2000,
+    isAppended: true,
     acceptedAttributes: [
       'containerStyle',
       'columnWidth',
@@ -31,7 +25,8 @@
       'isResizeBound',
       'itemSelector',
       'rowHeight',
-      'transitionDuration'
+      'transitionDuration',
+      'isAppended'
     ]
   };
 
@@ -147,6 +142,8 @@
       promise.then(function () {
         var packeryEls = self.packery.getItemElements();
 
+        console.log(config);
+
         if (packeryEls.indexOf(el[0]) === -1) {
           self.packery.appended(el[0]);
         }
@@ -186,7 +183,7 @@
         itemSelector: '@?', // Type: Selector String
         rowHeight: '@?', // Type: Number, Selector String
         transitionDuration: '@?', // Type: String
-
+        isAppended: '@?', // Type: Boolean
         draggable: '@?', // Type: Boolean
         handle: '@?' // Type: Boolean
 
@@ -201,17 +198,15 @@
         scope.columnWidth = scope.columnWidth || config.columnWidth;
         scope.itemSelector = scope.itemSelector || config.itemSelector;
         scope.rowHeight = scope.rowHeight || config.rowHeight;
-        scope.draggable = scope.draggable || config.draggable;
-        scope.handle = scope.handle || config.handle;
+        scope.draggable = !!scope.draggable || config.draggable;
+        scope.handle = !!scope.handle || config.handle;
+        scope.isHorizontal = !!scope.isHorizontal;
+        scope.isInitLayout = !!scope.isInitLayout;
+        scope.isOriginLeft = !!scope.isOriginLeft;
+        scope.isOriginTop = !!scope.isOriginTop;
+        scope.isResizeBound = !!scope.isResizeBound;
+        scope.isAppended = !!scope.isAppended || config.isAppended;
 
-        // Quick fix so 'false' strings don't evaluate to true
-        // @TODO: Check for attribute itself, not value of attribute
-        if (scope.draggable === 'false') { scope.draggable = false; }
-        if (scope.isHorizontal === 'false') { scope.isHorizontal = false; }
-        if (scope.isInitLayout === 'false') { scope.isInitLayout = false; }
-        if (scope.isOriginLeft === 'false') { scope.isOriginLeft = false; }
-        if (scope.isOriginTop === 'false') { scope.isOriginTop = false; }
-        if (scope.isResizeBound === 'false') { scope.isResizeBound = false; }
 
         // Creates JS Object for passing CSS styles into Packery
         if (scope.containerStyle && (typeof scope.containerStyle === 'object' )) { scope.containerStyle = scope.containerStyle; }
