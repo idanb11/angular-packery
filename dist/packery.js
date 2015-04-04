@@ -149,13 +149,11 @@
       promise.then(function () {
         var packeryEls = self.packery.getItemElements();
 
-        console.log(config);
-
         if (packeryEls.indexOf(el[0]) === -1) {
-          if (config.isAppended) {
-            self.packery.appended(el[0]);
-          } else {
+          if (self.packery.options.isAppended === 0) {
             self.packery.prepended(el[0]);
+          } else {
+            self.packery.appended(el[0]);
           }
         }
 
@@ -209,14 +207,18 @@
         scope.columnWidth = scope.columnWidth || config.columnWidth;
         scope.itemSelector = scope.itemSelector || config.itemSelector;
         scope.rowHeight = scope.rowHeight || config.rowHeight;
-        scope.draggable = !!scope.draggable || config.draggable;
-        scope.handle = !!scope.handle || config.handle;
-        scope.isHorizontal = !!scope.isHorizontal;
-        scope.isInitLayout = !!scope.isInitLayout;
-        scope.isOriginLeft = !!scope.isOriginLeft;
-        scope.isOriginTop = !!scope.isOriginTop;
-        scope.isResizeBound = !!scope.isResizeBound;
-        scope.isAppended = !!scope.isAppended || config.isAppended;
+        scope.draggable = scope.draggable || config.draggable;
+        scope.handle = scope.handle || config.handle;
+
+        // Quick fix so 'false' strings don't evaluate to true
+        // @TODO: Check for attribute itself, not value of attribute
+        if (scope.draggable === 'false') {scope.draggable = false;}
+        if (scope.isHorizontal === 'false') {scope.isHorizontal = false;}
+        if (scope.isInitLayout === 'false') {scope.isInitLayout = false;}
+        if (scope.isOriginLeft === 'false') {scope.isOriginLeft = false;}
+        if (scope.isOriginTop === 'false') {scope.isOriginTop = false;}
+        if (scope.isResizeBound === 'false') {scope.isResizeBound = false;}
+        if (scope.isAppended === 'false') {scope.isAppended = false;}
 
         // Creates JS Object for passing CSS styles into Packery
         if (scope.containerStyle && (typeof scope.containerStyle === 'object' )) { scope.containerStyle = scope.containerStyle; }
